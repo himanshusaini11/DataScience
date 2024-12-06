@@ -22,31 +22,29 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Create and start virtual environment
+      - name: Navigate to app directory and set up virtual environment
         run: |
           cd SpaceX_F9_Landing_Prediction/dash/
           python -m venv venv
           source venv/bin/activate
-          
+
       - name: Install dependencies
         run: |
           cd SpaceX_F9_Landing_Prediction/dash/
+          source venv/bin/activate
           pip install -r requirements.txt
-        
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
-      - name: Zip artifact for deployment
+      - name: Package application for deployment
         run: |
           cd SpaceX_F9_Landing_Prediction/dash/
-          zip release.zip ./* -r
+          zip -r release.zip . -x "venv/*" "*.git/*" "__pycache__/*" "*.pytest_cache/*"
+          ls -al  # Confirm release.zip is created
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
           name: python-app
-          path: |
-            release.zip
-            !venv/
+          path: SpaceX_F9_Landing_Prediction/dash/release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -55,7 +53,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
+      id-token: write  # Required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
@@ -67,11 +65,8 @@ jobs:
         run: |
           mkdir -p deployment
           unzip release.zip -d deployment
-          ls -al deployment  # Debug: Check extracted files
-          #cd SpaceX_F9_Landing_Prediction/dash/
-          #unzip release.zip
-
-      
+          ls -al deployment  # Debugging to confirm extracted files
+     
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -79,10 +74,11 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2315D577D09B4F62AECA52F48CAE8E2C }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_2A0A72D561D34EFF997A4CC94CFDA423 }}
 
-      - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v3
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
           app-name: 'spacex-capstone-ibm'
-          slot-name: 'Production'
+          slot-name: 'production'
+          package: deployment
           
