@@ -24,9 +24,10 @@ jobs:
 
       - name: Create and start virtual environment
         run: |
+          cd SpaceX_F9_Landing_Prediction/dash/
           python -m venv venv
           source venv/bin/activate
-          working-directory: SpaceX_F9_Landing_Prediction/dash/
+          
       - name: Install dependencies
         run: pip install -r requirements.txt
         
