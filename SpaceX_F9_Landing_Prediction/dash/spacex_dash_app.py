@@ -6,6 +6,13 @@ import dash_core_components as dcc
 from dash.dependencies import Input, Output
 import plotly.express as px
 
+import flask
+import os
+
+# Initialize Flask server and Dash app
+server = flask.Flask(__name__)
+app = dash.Dash(__name__, server=server)
+
 # Read the airline data into pandas dataframe
 spacex_df = pd.read_csv("spacex_launch_dash.csv")
 max_payload = spacex_df['Payload Mass (kg)'].max()
@@ -92,4 +99,5 @@ def get_scatter_plot(entered_site, payload_value):
 
 # Run the app
 if __name__ == '__main__':
-    app.run_server()
+    port = int(os.environ.get('PORT', 8000))
+    app.run_server(debug=False, host='0.0.0.0', port=port)
