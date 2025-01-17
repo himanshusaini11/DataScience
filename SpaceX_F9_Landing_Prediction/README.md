@@ -61,4 +61,4 @@ For any queries or collaborations, feel free to reach out:
 
 Name: Himanshu Saini
 Email: himanshusaini.rf@gmail.com
-LinkedIn: [[Your LinkedIn Profile]](https://www.linkedin.com/in/sainihimanshu/)
+LinkedIn: [Your LinkedIn Profile](https://www.linkedin.com/in/sainihimanshu/)
