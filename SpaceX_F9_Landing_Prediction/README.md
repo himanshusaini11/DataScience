@@ -54,7 +54,7 @@ Explore the live dashboard on Azure: [SpaceX Falcon 9 Landing Prediction](https:
    Run the dashboard locally
 
 ## License
-This project is licensed under the [MIT License](https://mit-license.org/).
+This project is licensed under the [MIT License](https://github.com/himanshusaini11/DataScientistProjects/blob/master/SpaceX_F9_Landing_Prediction/LICENSE.md).
 
 ## Contact
 For any queries or collaborations, feel free to reach out:
