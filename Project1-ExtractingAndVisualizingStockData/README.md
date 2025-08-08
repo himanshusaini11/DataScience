@@ -37,11 +37,11 @@ To run this project, you need to have Python installed along with the necessary 
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/himanshusaini11/Project1-ExtractingAndVisualizingStockData.git
+    git clone https://github.com/himanshusaini11/DataScience.git
     ```
 2. Navigate to the project directory:
     ```bash
-    cd Project1-ExtractingAndVisualizingStockData
+    cd DataScience/Project1-ExtractingAndVisualizingStockData
     ```
 3. Install the required Python packages:
     ```bash
@@ -69,4 +69,3 @@ For questions or inquiries, please contact:
 
 - **Himanshu Saini**
 - Email: himanshusaini.rf@gmail.com
-- GitHub: [himanshusaini11](https://github.com/himanshusaini11)
