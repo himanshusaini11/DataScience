@@ -7,8 +7,9 @@ Welcome to the **Data Scientist Projects** repository! This repository contains 
 ## Table of Contents
 
 - [Projects](#projects)
-  - [Project 1: Extracting and Visualizing Stock Data](#project-1-extracting-and-visualizing-stock-data)
-  - [Project 2: SpaceX Falcon 9 Landing Prediction](#project-2-spacex-falcon-9-landing-prediction)
+  - [Project 1: Extracting and Visualizing Stock Data](./Project1-ExtractingAndVisualizingStockData)
+  - [Project 2: SpaceX Falcon 9 Landing Prediction](./Project2-SpaceX_F9_LandingPrediction)
+  - [Project 3: Industrial Safety Prediction](./Project3-IndustrialSafetyPrediction)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
