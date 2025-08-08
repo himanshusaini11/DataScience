@@ -37,7 +37,7 @@ Explore the live dashboard on Azure: [SpaceX Falcon 9 Landing Prediction](https:
 ## Key Results
 - **Launch Success Trends:** Significant improvements in success rates over time.
 - **Impact of Payload and Booster Types:** Heavy payloads and specific booster types affect launch success.
-- **Machine Learning Performance:** Decision Tree classifier achieved the highest accuracy (90%).
+- **Machine Learning Performance:** Decision Tree classifier achieved the highest accuracy (94%).
 
 ## How to Use
 1. Clone the repository:
