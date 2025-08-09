@@ -113,5 +113,3 @@ MIT License
 Project Lead: Himanshu Saini
 
 Email: himanshusaini.rf@gmail.com
-
-GitHub:
