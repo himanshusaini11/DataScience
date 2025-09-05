@@ -16,7 +16,7 @@ FROM usr_count
 WHERE usr_count.usr_count > 1;
 ~~~~
 
-Output : 
+Output :
 
 | num_usr_more_than_1_activity |
 | ---------------------------- |
@@ -31,7 +31,7 @@ SELECT
 FROM groups AS grp;
 ~~~~
 
-Output: 
+Output:
 
 | start_date | end_date   |
 | ---------- | ---------- |
@@ -71,7 +71,7 @@ Output:
 
 ### Question 5: What was the conversion rate of all users?
 ~~~~sql
-WITH UserConversion AS (  
+WITH UserConversion AS (
   SELECT
   	DISTINCT usr.id,
     CASE
@@ -98,7 +98,7 @@ Output:
 
 ### Question 6: What is the user conversion rate for the control and treatment groups?
 ~~~~sql
-WITH UserConversion AS (  
+WITH UserConversion AS (
   SELECT
   	DISTINCT usr.id,
   	grp.group,
@@ -190,7 +190,7 @@ WITH AvgSpent AS (
   GROUP BY 1,2--,3,4
   ORDER BY 1
 ),
-UserConversion AS (  
+UserConversion AS (
   SELECT
   	DISTINCT usr.id,
   	grp.group,
@@ -247,7 +247,7 @@ WITH AvgSpent AS (
   GROUP BY 1,2--,3,4
   ORDER BY 1
 ),
-UserConversion AS (  
+UserConversion AS (
   SELECT
   	DISTINCT usr.id,
   	grp.group,
@@ -438,7 +438,7 @@ GROUP BY num_days_converted, ds.group
 ORDER BY num_days_converted;
 ~~~~
 
-Output : 
+Output :
 
 | num_days_converted | group           | tot_num_usr |
 | ------------------ | --------------- | ----------- |
@@ -456,4 +456,3 @@ Output :
 | 5                  | Treatment Group | 39          |
 | 6                  | Control Group   | 10          |
 | 6                  | Treatment Group | 17          |
-

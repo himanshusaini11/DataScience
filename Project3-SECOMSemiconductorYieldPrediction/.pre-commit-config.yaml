@@ -6,4 +6,3 @@ repos:
         name: Strip Jupyter notebook outputs
         files: \.ipynb$
         args: ["--keep-count"]
-

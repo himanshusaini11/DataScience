@@ -32,7 +32,7 @@ Our analysis began with an exploratory phase to understand the dataset’s chara
 
 $P = \frac{TP}{TP + FP}, \qquad R = \frac{TP}{TP + FN}$,
 
-where $TP$, $FP$, $FN$ are true positive, false positive, and false negative counts. The PR-AUC summarizes the trade-off between $P$ and $R$ across thresholds, and is more informative than ROC AUC in heavily imbalanced settings [1]. We also report Balanced Error Rate (BER), defined as the average of the positive class false rate and negative class false rate (equivalently, $1 - balanced\ accuracy$). 
+where $TP$, $FP$, $FN$ are true positive, false positive, and false negative counts. The PR-AUC summarizes the trade-off between $P$ and $R$ across thresholds, and is more informative than ROC AUC in heavily imbalanced settings [1]. We also report Balanced Error Rate (BER), defined as the average of the positive class false rate and negative class false rate (equivalently, $1 - balanced\ accuracy$).
 
 $Balanced\ accuracy = \tfrac{1}{2}(\text{TPR} + \text{TNR})$, so
 
@@ -120,9 +120,9 @@ Finally, we summarize that our interpretability analysis identified a small set 
 
 ### 1. Exploratory Data Analysis (EDA)
 - Dataset: [SECOM (UCI ML Repository)](https://archive.ics.uci.edu/dataset/179/secom)
-- Samples: `1567`  
-- Features (raw): `590`  
-- Class distribution: `Fail = 6.6%`, `Pass = 93.4%`  
+- Samples: `1567`
+- Features (raw): `590`
+- Class distribution: `Fail = 6.6%`, `Pass = 93.4%`
 
 >**Figure 1:** Label Distribution in `SECOM` dataset.
 > This bar plot shows the severe class imbalance in the SECOM dataset, where 93.4% of samples are labeled as *Pass* (1463 wafers) and only 6.6% as *Fail* (104 wafers). Such imbalance presents a major challenge for machine learning models, as naive classifiers can achieve high accuracy by predicting the majority class but fail to detect rare failures. This imbalance motivates the use of metrics like PR-AUC and recall at fixed precision rather than raw accuracy. It also underscores the importance of specialized techniques such as class-weighting, calibration, and cost-sensitive evaluation to make failure detection meaningful in a semiconductor manufacturing setting.
@@ -144,25 +144,25 @@ Finally, we summarize that our interpretability analysis identified a small set 
 
 ### 2. ETL Pipeline
 #### Summary
-- Sensors dropped (>70% missing): `8`  
-- Missingness indicators added (10–70% missing): `44` 
-- Median imputation applied to remaining features  
-- Outlier handling: `log` for skewed, `winsorize` at `1–99%` for heavy tails  
-- Standardization applied to numeric sensors  
+- Sensors dropped (>70% missing): `8`
+- Missingness indicators added (10–70% missing): `44`
+- Median imputation applied to remaining features
+- Outlier handling: `log` for skewed, `winsorize` at `1–99%` for heavy tails
+- Standardization applied to numeric sensors
 - Train/Val/Test split: Chronological split `60/20/20`
 - Feature set (pre-pruning): **626 features** (582 sensors + 44 indicators)
-- Final feature set: **375 features** (including 6 indicators) 
+- Final feature set: **375 features** (including 6 indicators)
 
 **Artifacts**
-- `data/processed/train.parquet`  
-- `data/processed/val.parquet`  
+- `data/processed/train.parquet`
+- `data/processed/val.parquet`
 - `data/processed/test.parquet`
 
-> **Figure 5:** Impact of missing-value drop threshold on features retained.  
+> **Figure 5:** Impact of missing-value drop threshold on features retained.
 > This plot shows how the number of retained vs. dropped features changes as the missing-value threshold varies. At the chosen threshold of `0.7` (red dashed line), only `8` features are dropped for being more than `70%` missing, while the vast majority `(582)` are kept. This decision balances retaining as much information as possible while removing sensors too sparse to be useful. The figure makes clear that lowering the threshold aggressively would discard many more features, while raising it further would have negligible effect.
 ![Drop Threshold](results/ETL/01_missing_drop_curve.png)
 
-> **Figure 6:** Impact of missingness-indicator threshold on flagged features.  
+> **Figure 6:** Impact of missingness-indicator threshold on flagged features.
 > This plot shows how many features receive binary missingness indicators as the flag threshold varies. At the chosen threshold of `0.1` (red dashed line), `44` features with `10–70%` missing values are flagged, resulting in the creation of additional indicator columns. These indicators allow the models to capture whether “missingness itself” carries predictive signal, instead of discarding those sensors outright. The curve illustrates that using a very low threshold would flood the dataset with hundreds of indicators, while a higher threshold would fail to capture moderate but potentially meaningful patterns of missingness.
 ![Flag Threshold](results/ETL/02_missing_flag_curve.png)
 
@@ -170,8 +170,8 @@ Finally, we summarize that our interpretability analysis identified a small set 
 
 ### 3. Modeling
 
-<!--**Goal:** Predict *Fail* outcomes from process measurements.  
-**Primary metric:** PR-AUC (precision–recall AUC). Secondary: ROC-AUC, Balanced Accuracy.  
+<!--**Goal:** Predict *Fail* outcomes from process measurements.
+**Primary metric:** PR-AUC (precision–recall AUC). Secondary: ROC-AUC, Balanced Accuracy.
 **Thresholding strategies (picked on validation, evaluated on test):**
 - **F1-optimal** (max F1 on validation)
 - **Recall ≥ 10%** (highest precision subject to recall floor)-->
@@ -224,15 +224,15 @@ The complete table (`PR_AUC`, `ROC_AUC`, `BalancedAcc`, `threshold`, and `confus
 
 #### 3.4 Figures
 - **Model comparison**
-> **Figure 5:** Model comparison by PR-AUC.  
+> **Figure 5:** Model comparison by PR-AUC.
 > Logistic Regression (with tuned thresholds) and simple averaging ensembles achieved the highest PR-AUC (~0.12). RandomForest and XGBoost performed worse in PR space, while deep MLP baselines underperformed overall. Calibration improved probability reliability but did not increase discriminative power.
 ![PR-AUC Leaderboard](results/modeling/01_model_leaderboard_pr_auc.png)
 
-> **Figure 6:** Model comparison by ROC-AUC.  
-> Averaging ensembles and stacking achieved the highest ROC-AUC values (~0.73–0.75). Logistic Regression and RandomForest reached ~0.62–0.64, while XGBoost and MLP trailed near 0.53–0.55. Although ROC-AUC shows moderate separation, it is less informative than PR-AUC in this imbalanced setting. This confirms the choice of PR-AUC as the primary ranking metric, with ROC-AUC kept as a secondary check.  
+> **Figure 6:** Model comparison by ROC-AUC.
+> Averaging ensembles and stacking achieved the highest ROC-AUC values (~0.73–0.75). Logistic Regression and RandomForest reached ~0.62–0.64, while XGBoost and MLP trailed near 0.53–0.55. Although ROC-AUC shows moderate separation, it is less informative than PR-AUC in this imbalanced setting. This confirms the choice of PR-AUC as the primary ranking metric, with ROC-AUC kept as a secondary check.
 ![ROC-AUC Leaderboard](results/modeling/02_model_leaderboard_roc_auc.png)
 
-<!--- **(Optional) Additional plots created in notebook**  
+<!--- **(Optional) Additional plots created in notebook**
   *(include here if exported alongside the two above)*-->
 
 #### 3.5 Saved Artifacts
@@ -298,9 +298,9 @@ The complete table (`PR_AUC`, `ROC_AUC`, `BalancedAcc`, `threshold`, and `confus
 ![Bootstrap_95_CI_PR_F1_thr](results/interpretability/09_bootstrap_forest_Precision@F1thr.png)
 ![Bootstrap_95_CI_ROC_F1_thr](results/interpretability/09_bootstrap_forest_Recall@F1thr.png)
 ![Bootstrap_95_CI_BAL_AUC_F1_thr](results/interpretability/09_bootstrap_forest_BalancedAcc@F1thr.png)
-![Bootstrap_95_CI_PR_ROC_10](results/interpretability/09_bootstrap_forest_Precision@Recge10%thr.png)
-![Bootstrap_95_CI_ROC_ROC_10](results/interpretability/09_bootstrap_forest_Recall@Recge10%thr.png)
-![](results/interpretability/09_bootstrap_forest_BalancedAcc@Recge10%thr.png)
+![Bootstrap_95_CI_PR_ROC_10](results/interpretability/09_bootstrap_forest_Precision@Recge10_thr.png)
+![Bootstrap_95_CI_ROC_ROC_10](results/interpretability/09_bootstrap_forest_Recall@Recge10_thr.png)
+![Bootstrap_95_CI_BAL_AUC_ROC_10](results/interpretability/09_bootstrap_forest_BalancedAcc@Recge10_thr.png)
 
 <!--**Key CI summaries (Test):**
 - Logistic Regression: PR‑AUC **0.136 [0.053, 0.254]**, ROC‑AUC **0.640 [0.474, 0.791]**.
@@ -336,8 +336,8 @@ In summary, our investigation distinguishes itself from prior SECOM analyses by 
 10. [How to Calibrate Probabilities for Imbalanced Classification](https://machinelearningmastery.com/probability-calibration-for-imbalanced-classification/#:~:text=class)
 
 ## Artifacts
-- Models saved under: `models/`  
-- Artifacts under: `artifacts/`  
+- Models saved under: `models/`
+- Artifacts under: `artifacts/`
 - Results (CSV, PNG) under: `results/`
 
 ---

@@ -72,7 +72,7 @@ Date,Time (UTC),Booster_Version,Launch_Site,Payload,PAYLOAD_MASS__KG_,Orbit,Cust
 2019-05-24,2:30:00,F9 B5 B1049.3,CCAFS SLC-40,"Starlink v0.9, RADARSAT Constellation",13620,LEO,SpaceX,Success,Success
 2019-06-12,14:17:00,F9 B5 B1051.2 ,VAFB SLC-4E,"RADARSAT Constellation, SpaceX CRS-18 ",4200,SSO,Canadian Space Agency (CSA),Success,Success
 2019-07-25,22:01:00,F9 B5 B1056.2 ,CCAFS SLC-40,"SpaceX CRS-18, AMOS-17 ",2268,LEO (ISS),NASA (CRS),Success,Success
-2019-08-06,23:23:00,F9 B5 B1047.3 ,CCAFS SLC-40,"AMOS-17, Starlink 1 v1.0 ",6500,GTO,Spacecom,Success,No attempt 
+2019-08-06,23:23:00,F9 B5 B1047.3 ,CCAFS SLC-40,"AMOS-17, Starlink 1 v1.0 ",6500,GTO,Spacecom,Success,No attempt
 2019-11-11,14:56:00,F9 B5 B1048.4,CCAFS SLC-40,"Starlink 1 v1.0, SpaceX CRS-19 ",15600,LEO,SpaceX,Success,Success
 2019-12-05,17:29:00,F9 B5B1059.1,CCAFS SLC-40,"SpaceX CRS-19, JCSat-18 / Kacific 1 ",2617,LEO (ISS),"NASA (CRS), Kacific 1",Success,Success
 2019-12-17,0:10:00,F9 B5 B1056.3 ,CCAFS SLC-40,"JCSat-18 / Kacific 1, Starlink 2 v1.0 ",6956,GTO,"Sky Perfect JSAT, Kacific 1",Success,Success
