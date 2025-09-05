@@ -32,3 +32,5 @@ venv/
 # artifacts/*
 # models/*
 
+# Social content (local-only)
+LinkedIn_Presence/
