@@ -1,0 +1,36 @@
+column,train_dtype,test_dtype,dtype_match
+ID,int64,int64,True
+Loan Amount,int64,int64,True
+Funded Amount,int64,int64,True
+Funded Amount Investor,float64,float64,True
+Term,int64,int64,True
+Batch Enrolled,object,object,True
+Interest Rate,float64,float64,True
+Grade,object,object,True
+Sub Grade,object,object,True
+Employment Duration,object,object,True
+Home Ownership,float64,float64,True
+Verification Status,object,object,True
+Payment Plan,object,object,True
+Loan Title,object,object,True
+Debit to Income,float64,float64,True
+Delinquency - two years,int64,int64,True
+Inquires - six months,int64,int64,True
+Open Account,int64,int64,True
+Public Record,int64,int64,True
+Revolving Balance,int64,int64,True
+Revolving Utilities,float64,float64,True
+Total Accounts,int64,int64,True
+Initial List Status,object,object,True
+Total Received Interest,float64,float64,True
+Total Received Late Fee,float64,float64,True
+Recoveries,float64,float64,True
+Collection Recovery Fee,float64,float64,True
+Collection 12 months Medical,int64,int64,True
+Application Type,object,object,True
+Last week Pay,int64,int64,True
+Accounts Delinquent,int64,int64,True
+Total Collection Amount,int64,int64,True
+Total Current Balance,int64,int64,True
+Total Revolving Credit Limit,int64,int64,True
+Loan Status,int64,float64,False

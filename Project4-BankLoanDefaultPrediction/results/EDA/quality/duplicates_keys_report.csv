@@ -1,0 +1,3 @@
+metric,non_null,nunique,rows,value
+duplicate_rows,,,,0
+id_unique::ID,67463,67463,67463,True

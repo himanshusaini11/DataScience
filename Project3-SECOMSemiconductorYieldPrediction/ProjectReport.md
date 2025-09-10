@@ -103,7 +103,7 @@ SHAP analysis: SHAP values provide a unified, game-theoretic approach to explain
 
 $\displaystyle \phi_j(f, x) = \sum_{S \subseteq D \setminus\{j\}} \frac{|S|!~(M - |S| - 1)!}{M!} \Big[ f(x_{S \cup \{j\}}) - f(x_{S}) \Big]$,
 
-where $M$ is the total number of features, $D$ is the full feature set, and $f(x_S)$ denotes the model prediction using only the features in subset $S$ (features not in $S$ are marginalized or set to a baseline value) ￼
+where $M$ is the total number of features, $D$ is the full feature set, and $f(x_S)$ denotes the model prediction using only the features in subset $S$ (features not in $S$ are marginalized or set to a baseline value).
 
 Computing this exact summation for all subsets $S$ is generally infeasible, but efficient algorithms exist for certain model classes and approximations [4]. We used TreeSHAP [4] (which is exact for tree ensembles) to compute SHAP values for the Random Forest and XGBoost models. For each model, we calculated $\phi_j$ for all features on a held-out test subset.
 
@@ -115,6 +115,33 @@ We also explored agreement between models on interpretability. Interestingly, bo
 
 Finally, we summarize that our interpretability analysis identified a small set of sensor features (on the order of 5) that consistently influence the predictions. These include both the actual sensor reading and sometimes the missing-data flag for that sensor. Such features would be prime candidates for further investigation or monitoring in the fab. The SHAP analysis provided evidence that when these sensors deviate significantly from normal ranges, the risk of failure increases. This aligns with the goal of the project: not only to predict failures, but to yield process insights. In a real deployment, these insights could guide engineers to implement better controls or alarms on the top-ranked features. All model interpretation was done on the test set results, after confirming the models had acceptable predictive performance, to ensure we explain the final model behavior on unseen data. The combination of global feature importance and local explanation (SHAP values for individual predictions) makes the model’s decisions more transparent, which is crucial for user trust and further refinement of the process.
 
+
+#### Cost-Sensitive Evaluation
+A way to choose models and thresholds by **cost of mistakes**, not just AUC. Each decision incurs a cost if we miss a real fail (FN) or raise a false alarm (FP).
+
+Fails are rare (≈6.6%), and fabs value **catching misses** and **limiting alarm load** differently across contexts. A single threshold or metric cannot serve all FN:FP trade-offs. Cost-sensitive evaluation makes the choice explicit and operational.
+
+**Decision cost model.**  
+Let \(N\) be test wafers, \(FN(\tau)\) and \(FP(\tau)\) be counts at threshold \(\tau\). Let \(c_{\mathrm{FN}}\) be the cost of a miss and \(c_{\mathrm{FP}}\) the cost of a false alarm. Define the **cost ratio** \(r=c_{\mathrm{FN}}/c_{\mathrm{FP}}\) and set \(c_{\mathrm{FP}}=1\) without loss of generality.  
+Expected cost **per wafer**:
+\[
+C(r,\tau)=\frac{FN(\tau)}{N}\,r+\frac{FP(\tau)}{N}.
+\]
+For reporting **per 1,000 wafers**:
+\[
+C_{1k}(r,\tau)=1000\left[\frac{FN(\tau)}{N}\,r+\frac{FP(\tau)}{N}\right].
+\]
+We also track **alarm load** \(AL_{1k}(\tau)=1000\,\frac{FP(\tau)}{N}\) and **recall** at \(\tau\).
+
+**Procedure.**
+1. **Calibrate** validation probabilities (isotonic or Platt).
+2. For each model and each \(r \in \{1,2,5,10,15,20,30,50\}\), **sweep** \(\tau\) on the **validation** set and pick
+\[
+\tau^{*}(r) = \arg\min_{\tau} C_{1k}(r,\tau).
+\]
+Record recall and \(\mathrm{AL}_{1k}(\tau^{*}(r))\).
+3. **Lock \(\tau^{*}(r)\)**. Evaluate \(C_{1k}(r,\tau^{*}(r))\), recall, and \(\mathrm{AL}_{1k}(\tau^{*}(r))\) on the **test** set.
+4. **Report**: minimum-cost curves vs \(r\) and **alarm-load frontiers** (FP/1k vs recall).
 
 ## Results
 

@@ -1,0 +1,36 @@
+column,non_nulls,nunique,constant,near_constant,mixed_types
+Payment Plan,67463,1,True,False,False
+Accounts Delinquent,67463,1,True,False,False
+Application Type,67463,2,False,True,False
+ID,67463,67463,False,False,False
+Loan Amount,67463,27525,False,False,False
+Funded Amount,67463,24548,False,False,False
+Funded Amount Investor,67463,67441,False,False,False
+Term,67463,3,False,False,False
+Batch Enrolled,67463,41,False,False,False
+Interest Rate,67463,67448,False,False,False
+Grade,67463,7,False,False,False
+Sub Grade,67463,35,False,False,False
+Employment Duration,67463,3,False,False,False
+Home Ownership,67463,67454,False,False,False
+Verification Status,67463,3,False,False,False
+Loan Title,67463,109,False,False,False
+Debit to Income,67463,67454,False,False,False
+Delinquency - two years,67463,9,False,False,False
+Inquires - six months,67463,6,False,False,False
+Open Account,67463,36,False,False,False
+Public Record,67463,5,False,False,False
+Revolving Balance,67463,20582,False,False,False
+Revolving Utilities,67463,67458,False,False,False
+Total Accounts,67463,69,False,False,False
+Initial List Status,67463,2,False,False,False
+Total Received Interest,67463,67451,False,False,False
+Total Received Late Fee,67463,67380,False,False,False
+Recoveries,67463,67387,False,False,False
+Collection Recovery Fee,67463,67313,False,False,False
+Collection 12 months Medical,67463,2,False,False,False
+Last week Pay,67463,162,False,False,False
+Total Collection Amount,67463,2193,False,False,False
+Total Current Balance,67463,60901,False,False,False
+Total Revolving Credit Limit,67463,37708,False,False,False
+Loan Status,67463,2,False,False,False

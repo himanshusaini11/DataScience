@@ -1,7 +1,19 @@
+# Project-local ignores (do not affect other projects)
 
-# Ignore macOS junk
+# Large/binary model artifacts
+models/*.pkl
+artifacts/**/model/*.pkl
+
+# macOS metadata
 ._*
 .DS_Store
-# Ignore large/binary data
-*.zip
-*.pkl
+
+# Notebook autosaves
+*.ipynb_checkpoints/
+
+EDA_Description.md/
+EDA_Plan.md/
+notebook/02_ETL.ipynb
+notebook/03_Modeling.ipynb
+notebook/04_Interpretability.ipynb
+notebook/05_AdvanceResearch.ipynb
