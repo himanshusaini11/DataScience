@@ -2,9 +2,3 @@ DataScience.code-workspace
 
 # Ignore literature folders in any project (local-only)
 **/literature/
-Project4-BankLoanDefaultPrediction/EDA_Description.md/
-Project4-BankLoanDefaultPrediction/EDA_Plan.md/
-Project4-BankLoanDefaultPrediction/notebook/02_ETL.ipynb
-Project4-BankLoanDefaultPrediction/notebook/03_Modeling.ipynb
-Project4-BankLoanDefaultPrediction/notebook/04_Interpretability.ipynb
-Project4-BankLoanDefaultPrediction/notebook/05_AdvanceResearch.ipynb
