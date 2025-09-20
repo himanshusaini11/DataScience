@@ -58,4 +58,4 @@ Predicting which wafer runs are likely to fail final quality checks so fabs can 
 - LinkedIn: https://www.linkedin.com/in/sainihimanshu/
 
 ## Acknowledgments
-This project used AI‑assisted tooling (OpenAI ChatGPT via the Codex CLI) for editorial support, refactoring, and documentation. All analysis, code, and conclusions were implemented, reviewed, and validated by the author, and results are reproducible from the notebooks and artifacts.
+This project used AI‑assisted tooling (OpenAI ChatGPT) for editorial support, and documentation. All data preparation, modeling, evaluation, and conclusions were implemented, reviewed, and validated by the author, and the results are reproducible from the included notebooks and artifacts.

@@ -121,8 +121,8 @@ A way to choose models and thresholds by **cost of mistakes**, not just AUC. Eac
 
 Fails are rare (≈6.6%), and fabs value **catching misses** and **limiting alarm load** differently across contexts. A single threshold or metric cannot serve all FN:FP trade-offs. Cost-sensitive evaluation makes the choice explicit and operational.
 
-**Decision cost model.**  
-Let \(N\) be test wafers, \(FN(\tau)\) and \(FP(\tau)\) be counts at threshold \(\tau\). Let \(c_{\mathrm{FN}}\) be the cost of a miss and \(c_{\mathrm{FP}}\) the cost of a false alarm. Define the **cost ratio** \(r=c_{\mathrm{FN}}/c_{\mathrm{FP}}\) and set \(c_{\mathrm{FP}}=1\) without loss of generality.  
+**Decision cost model.**
+Let \(N\) be test wafers, \(FN(\tau)\) and \(FP(\tau)\) be counts at threshold \(\tau\). Let \(c_{\mathrm{FN}}\) be the cost of a miss and \(c_{\mathrm{FP}}\) the cost of a false alarm. Define the **cost ratio** \(r=c_{\mathrm{FN}}/c_{\mathrm{FP}}\) and set \(c_{\mathrm{FP}}=1\) without loss of generality.
 Expected cost **per wafer**:
 \[
 C(r,\tau)=\frac{FN(\tau)}{N}\,r+\frac{FP(\tau)}{N}.
@@ -405,4 +405,4 @@ Note: This appendix summarizes ongoing analyses. Figures are illustrative; speci
 
 ## Acknowledgments
 
-This project used AI‑assisted tooling (OpenAI ChatGPT via the Codex CLI) for editorial support, code refactoring, and documentation. All data preparation, modeling, evaluation, and conclusions were implemented, reviewed, and validated by the author, and the results are reproducible from the included notebooks and artifacts.
+This project used AI‑assisted tooling (OpenAI ChatGPT) for editorial support, and documentation. All data preparation, modeling, evaluation, and conclusions were implemented, reviewed, and validated by the author, and the results are reproducible from the included notebooks and artifacts.
