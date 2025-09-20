@@ -7,8 +7,8 @@
 - What’s in this repo: A single consolidated notebook (`notebooks/Project.ipynb`) that performs data inspection, class balancing experiments (Original vs SMOTE vs NearMiss), model training/evaluation, feature importance (Random Forest), and generates a submission file.
 - Outputs: Comparison plots and per‑model figures under `results/`, plus `results/HS_Submission.csv`.
 
-## Data & Setup (from Project.ipynb)
-
+## Data & Setup
+- Dataset Link: [Kaggle Hackathon](https://www.kaggle.com/datasets/ankitkalauni/bank-loan-defaulter-prediction-hackathon)
 - Files: `data/raw/train.csv`, `data/raw/test.csv`
 - Columns preview and dtypes are explored in the notebook; target is present only in train.
 - Notebook helper `savefig(name, out_dir)` saves figures to `results/`.
