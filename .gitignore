@@ -2,3 +2,13 @@ DataScience.code-workspace
 
 # Ignore literature folders in any project (local-only)
 **/literature/
+# Ignore all Markdown files
+*.md
+
+# But keep README.md
+!README.md
+
+# Ignore all zip files
+*.zip
+# Ignore workspace files
+*.code-workspace
