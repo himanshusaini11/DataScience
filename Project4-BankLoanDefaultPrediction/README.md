@@ -1,115 +1,95 @@
-# Bank Loan Default Prediction Project
+# Bank Loan Default Prediction
 
-## Project Overview
+## Problem statement
+Banks face losses when borrowers default. The goal is to flag risky applications **before** approval using historical data.
 
-The project involves creating a machine learning model to predict loan defaulters by analyzing synthetic financial and demographic data for 100,000 borrowers.
+- **Dataset Link:** [Kaggle Hackathon](https://www.kaggle.com/datasets/ankitkalauni/bank-loan-defaulter-prediction-hackathon)
+- **Data**: `data/raw/train.csv`, `data/raw/test.csv`
+- **Target**: `Loan Status` (0 = non-default, 1 = default)
+- **Challenge**: **class imbalance** (defaults are rare). Standard accuracy is misleading; recall and F1 matter.
 
-### Features
+## Methodology
+Build an **end‑to‑end** ML pipeline that:
+- Handles class imbalance robustly.
+- Benchmarks multiple models fairly.
+- Produce predtictions and save them into the ```.csv``` file.
 
-Data Generation: Synthetic data mimicking real-world borrower characteristics
+**Success criteria**
+- Transparent metrics beyond accuracy: **Precision, Recall, F1, ROC AUC**.
+- Reproducible pipeline in a single notebook.
+- Visual evidence saved in `results/`.
 
-Data Exploration & Cleaning: Identifying patterns and managing missing or inconsistent data
+## Results
+What I implemented, step by step:
+1. **Data audit & EDA**
+   - Previewed schema and dtypes in the notebook.
+   - Saved overview figures (e.g., [Unique values per column](results/01_UniqueValuesPerColumn.png), [Distributions](results/02_DistributionPlot.png)).
+2. **Preprocessing**
+   - Basic cleaning and type handling performed inside `notebooks/Project.ipynb`.
+3. **Imbalance strategies**
+   - **SMOTE** (oversampling) and **NearMiss** (undersampling) variants for each model.
+4. **Models evaluated**
+   - Logistic Regression, Decision Tree, Random Forest, XGBoost, and SVC.
+   - Select models tuned via **GridSearchCV** (see notebook cells).
+5. **Evaluation**
+   - Reported **Accuracy, Precision, Recall, F1, ROC AUC**; created side‑by‑side comparison plots:
+     - [Accuracy](results/03_ModelAccuracyComparison.png)
+     - [F1](results/06_ModelF1ScoreComparison.png)
+     - [ROC AUC](results/07_Model_ROC_AUC_Comparison.png)
+6. **Feature insight**
+   - Random Forest feature importance: [figure](results/13_ImportantFeatures_RF.png).
+7. **Submission generation**
+   - Created predictions in `results/HS_Submission*.csv` for review.
 
-Feature Engineering: Creating meaningful predictors from raw data
+<details>
+<summary>Per‑model figures</summary>
 
-Machine Learning Models: Logistic Regression, Random Forest, and XGBoost
+- Logistic Regression: [Original](results/1_LogReg%20-%20Original.png) · [SMOTE](results/2_LogReg%20-%20SMOTE.png) · [NearMiss](results/3_LogReg%20-%20NearMiss.png)
+- Decision Tree: [Original](results/4_DecisionTree%20-%20Original.png) · [SMOTE](results/5_DecisionTree%20-%20SMOTE.png) · [NearMiss](results/6_DecisionTree%20-%20NearMiss.png)
+- Random Forest: [Original](results/7_RandomForest%20-%20Original.png) · [SMOTE](results/8_RandomForest%20-%20SMOTE.png) · [NearMiss](results/9_RandomForest%20-%20NearMiss.png)
+- XGBoost: [Original](results/10_XGBoost%20-%20Original.png) · [SMOTE](results/11_XGBoost%20-%20SMOTE.png) · [NearMiss](results/12_XGBoost%20-%20NearMiss.png)
 
-Model Evaluation: Accuracy, Precision, Recall, F1-score, and ROC-AUC
+</details>
 
-## Getting Started
+## Key Result
+All numbers are printed by `notebooks/Project.ipynb` and summarized here for quick review.
 
-### Requirements:
+- **Best F1**: **XGBoost + NearMiss**
+  Accuracy: **0.2945** · Precision: **0.0944** · Recall: **0.7708** · F1: **0.1681** · ROC AUC: **0.5092**
 
-Python (3.8 or higher)
+- **Best ROC AUC**: **SVC + SMOTE**
+  ROC AUC: **≈0.5165** · F1: **≈0.1641**
 
-Pandas
+**Interpretation**
+- High **recall** with modest **precision** is consistent with severe imbalance: the model prioritizes catching defaults.
+- ROC AUC near ~0.51 suggests signal is present but weak; threshold tuning and cost‑sensitive methods are likely next wins.
 
-NumPy
 
-Scikit-learn
+## Repo at a glance
+```
+data/
+  raw/               # train.csv, test.csv
+  processed/         # created by notebook
+notebooks/
+  Project.ipynb      # main workflow
+results/
+  ...                # all figures and HS_Submission*.csv files
+```
 
-XGBoost
+## Reproduce locally
+1. Create a Python 3 environment.
+2. Install deps:
+   ```bash
+   pip install pandas numpy scikit-learn imbalanced-learn xgboost matplotlib seaborn jupyter
+   ```
+3. Run the notebook:
+   ```bash
+   jupyter notebook notebooks/Project.ipynb
+   ```
+4. Outputs will appear in `results/` and include `HS_Submission.csv` variants.
 
-Matplotlib
 
-Seaborn
-
-Faker (for synthetic data)
-
-## Data Generation
-
-### Synthetic data includes:
-
-Customer ID
-
-Age
-
-Gender
-
-Income Level
-
-Employment Status
-
-Loan Amount
-
-Loan Term
-
-Credit Score
-
-Debt-to-Income Ratio
-
-Previous Default History
-
-Default Status (binary outcome)
-
-## Usage
-
-Run the provided Python script to generate synthetic data.
-
-Explore and visualize data distributions.
-
-Train machine learning models.
-
-Evaluate model performance.
-
-Generate predictions for loan default.
-
-## Code Structure
-
-data_generation.py: Script for synthetic data generation
-
-data_processing.py: Script for data cleaning and feature engineering
-
-model_training.py: Script for training and evaluating models
-
-visualizations.py: Script for visualizing data and model outputs
-
-## Algorithm Descriptions
-
-Logistic Regression: Baseline classifier for interpretability.
-
-Random Forest: Handles complex relationships and reduces overfitting.
-
-XGBoost: Boosted trees for optimal performance and accuracy.
-
-## Future Enhancements
-
-Hyperparameter tuning for optimized performance
-
-Deployment as an API or web application
-
-Real-time prediction system implementation
-
-## Contributing
-
-Contributions and improvements are welcomed. Fork the repository, create a feature branch, and submit a pull request.
-
-## License
-
-MIT License
-
-## Contact Information
-
-Project Lead: Himanshu Saini
-
-Email: himanshusaini.rf@gmail.com
+## Contact
+- Name: Himanshu Saini
+- Email: himanshusaini.rf@gmail.com
+- LinkedIn: https://www.linkedin.com/in/sainihimanshu/

@@ -9,23 +9,23 @@
 This project demonstrates a full-cycle A/B testing analysis using real-world-style data. It walks through formulation of hypotheses, experimental design, statistical testing, and business-focused interpretation.
 
 **Objectives:**
-- Understand how to structure an A/B test using principles like PICOT (Population, Intervention, Comparison, Outcome, Time)  
-- Develop reproducible, data-driven conclusions to decide between two variants (A vs. B)  
+- Understand how to structure an A/B test using principles like PICOT (Population, Intervention, Comparison, Outcome, Time)
+- Develop reproducible, data-driven conclusions to decide between two variants (A vs. B)
 - Learn key techniques such as hypothesis testing, statistical significance, and confidence intervals
 
 ---
 
 ##  Methodology
 
-1. **Hypothesis Design**  
+1. **Hypothesis Design**
 
-2. **Sampling**  
+2. **Sampling**
 
-3. **Metric Selection**  
+3. **Metric Selection**
 
-4. **Statistical Analysis**  
+4. **Statistical Analysis**
 
-5. **Interpretation & Action**  
+5. **Interpretation & Action**
 
 ---
 

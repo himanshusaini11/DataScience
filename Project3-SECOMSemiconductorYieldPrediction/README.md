@@ -1,100 +1,61 @@
-# **SECOM Semiconductor Yield Prediction**
+# SECOM Semiconductor Yield Prediction
 
-### Summary
+Predicting which wafer runs are likely to fail final quality checks so fabs can reduce rework, avoid downtime, and focus engineering effort where it matters.
 
->*Developed an end-to-end predictive yield modeling pipeline on SECOM semiconductor dataset. Built logistic regression, random forests, gradient boosting, deep learning, and online streaming models. Addressed extreme class imbalance with threshold tuning and cost-sensitive evaluation. Demonstrated that model choice depends on false negative vs false positive trade-offs, with crossover ratios as low as 4:1. Produced reproducible analysis in Python with SHAP interpretability and visualization.*
+## Executive Summary
+- **Business goal:** Early failure detection to save cost and time on the production line.
+- **Real-world [SECOM dataset (UCI)](https://archive.ics.uci.edu/dataset/179/secom):** 1,567 production runs (wafer lots), 590 sensors per run; only ~6.6% are “fail” (rare event).
+- **What we built:** Cleaned and prepared the data, trained several models, and evaluated them on a held‑out test set. We balanced the trade‑off between missed failures and false alarms, and made the results explainable.
+- **Key results (test set):**
+  - Best by precision‑recall: Logistic Regression (PR‑AUC ~0.12). A simple averaging ensemble is close (~0.116).
+  - Best by ROC‑AUC: Averaging ensemble (~0.749), then Stacking (~0.709); Logistic and Random Forest are mid‑pack (~0.64/~0.62).
+  - Operations lens: When missing a failure is much more costly than a false alarm, Random Forest can be preferable because it catches more rare failures at the expense of extra alarms. Otherwise, Logistic is a solid default.
+- **Interpretability:** SHAP highlights a small, stable set of impactful sensors (e.g., f033, f059, f460) that consistently influence predictions. This can guide monitoring and process investigations.
 
-###  Project Overview
+## How to Browse the Project
+- Read the full report: [ProjectReport.md](ProjectReport.md) (all figures and decisions).
+- Notebooks (step‑by‑step):
+  - EDA: [notebooks/01_EDA.ipynb](notebooks/01_EDA.ipynb)
+  - ETL: [notebooks/02_ETL.ipynb](notebooks/02_ETL.ipynb)
+  - Modeling: [notebooks/03_Modeling.ipynb](notebooks/03_Modeling.ipynb)
+  - Interpretability: [notebooks/04_Interpretability.ipynb](notebooks/04_Interpretability.ipynb)
+- Key figures:
+  - Precision–Recall (test): [results/interpretability/01_pr_curve_test.png](results/interpretability/01_pr_curve_test.png)
+  - SHAP summary (RF): [results/interpretability/04_shap_rf_summary_bar.png](results/interpretability/04_shap_rf_summary_bar.png)
+  - Cost vs FN:FP sweep: [results/interpretability/08_cost_vs_fn_fp_ratio.png](results/interpretability/08_cost_vs_fn_fp_ratio.png)
 
-This project applies machine learning to the **SECOM semiconductor dataset (UCI repository)** to predict whether a wafer production run will pass or fail quality inspection.
-- **Goal:** Predict failures early to reduce costly rework and downtime.
-- **Dataset:**
-	- 1,567 runs (wafer lots)
-	- 590 continuous sensor measurements
-	- Labels: -1 = pass, 1 = fail (6.6% fails --> extreme imbalance)
+## What’s Inside
+- **Data & setup:**
+  - Chronological train/validation/test split to mimic production (no leakage from the future).
+  - Careful handling of missing values, outliers, and redundant sensors.
+  - Final modeling feature set: 375 features (list in `data/processed/features_final.txt`).
+- **Models evaluated:**
+  - Logistic Regression, Random Forest, XGBoost, MLP (neural net), feature‑selection pipelines, simple averaging and stacking ensembles.
+  - Thresholds chosen on validation, then evaluated on test; probabilities calibrated.
+- **How we measure success:**
+  - Precision–Recall AUC (PR‑AUC) for rare‑event detection (primary).
+  - ROC‑AUC as a secondary view; cost‑sensitive curves to reflect fab trade‑offs.
 
-### Challenges
-1. Severe class imbalance (~93% pass, ~7% fail).
-2. High dimensionality (590 features, many correlated).
-3. Missing values in multiple sensors.
-4. Weak signal — failures are difficult to separate from passes.
-5. Noisy labels — sensor readings may not fully capture defect causes.
+## Results at a Glance (Test)
+- *PR‑AUC:* Logistic ~0.12 (best), Averaging ensemble ~0.116, Stacking ~0.098; others lower.
+- *ROC‑AUC:* Averaging ~0.749, Stacking ~0.709, Logistic ~0.643, Random Forest ~0.617.
+- *Cost trade‑offs:* Preferred model/threshold depends on how costly a missed failure is relative to a false alarm.
 
-### Methodology
+## Reproducibility and Artifacts
+- *Processed datasets:* `data/processed/*.parquet` (includes `label` and `timestamp` for traceability; timestamp is not used as a model feature).
+- *Final features:* `data/processed/features_final.txt`.
+- *Trained models:* `models/`.
+- *Metrics & figures:* `results/`.
 
-1. Data Preparation
-	- Removed constant features and handled missing values.
-	- Standardized features.
-	- Chronological splits (train / validation / test) to respect production drift.
-
-2. Baseline Models
-	- Logistic Regression
-	- Random Forest
-	- XGBoost
-	- MLP (`PyTorch`)
-
-3. Advanced Models
-	- MLP with Weighted BCE / Focal Loss
-	- Autoencoder (unsupervised anomaly detection)
-	- Streaming SGD (online logistic regression)
-
-4. Interpretability
-	- `SHAP` values identified top sensor features most correlated with failures.
-
-5. Cost-Sensitive Evaluation
-	- Beyond PR-AUC/ROC-AUC, evaluated models under false negative (FN) vs false positive (FP) cost trade-offs.
-	- Introduced a cost function: 
-      $\text{Cost} = C_{fp} \cdot FP + C_{fn} \cdot FN$
-	- Swept FN:FP ratios (1:1 to 30:1) to mimic fab economics.
-
-### Key Results
-
-1. Classical Metrics (PR-AUC, ROC-AUC)
-	- Logistic Regression (PR-AUC ≈ 0.16) performed best.
-	- Other models struggled (PR-AUC < 0.14).
-
-2. Cost-Sensitive Analysis
-	- Crossover points (where models become cheaper than Logistic Regression):
-	- MLP (Focal): ~4:1
-	- XGBoost: ~5:1
-	- RF / MLP (Weighted BCE): ~6:1
-	- Streaming SGD: dominated (never cheaper up to 30:1)
-	- Insight: Even if Logistic looks best by AUC, fabs with higher FN penalties should prefer MLP or tree models.
-
-3. Interpretability
-	- `SHAP` analysis identified sensors `f059`, `f460`, `f033` as most impactful in predicting failures.
-
-⸻
-
-### Visuals
-- PR / ROC curves
-- SHAP summary plot
-- Cost vs FN:FP curves (Block 41B — key figure)
-
-### Takeaways
-- No single best model: choice depends on fab’s FN:FP trade-off.
-- Cost-sensitive analysis is more relevant than AUC for high-stakes manufacturing.
-- Streaming/online models are attractive for real-time monitoring, but classical supervised models with tuned thresholds remain more cost-effective here.
-
-### Repository Contents
-- notebooks/ – full analysis (step-by-step Jupyter notebooks)
-- results/ – figures, CSVs, SHAP outputs
-- src/ – scripts for preprocessing and evaluation
-- README.md – this file
-
-### Future Work
-- Feature engineering with domain knowledge (sensor aggregates, ratios).
-- Semi-supervised anomaly detection with pseudo-labels.
-- Deploy interactive Streamlit dashboard for FN:FP trade-off exploration.
-- Benchmark against GAN-based imputation approaches (Semi-GAN).
-
-
-## License
-This project is licensed under the [MIT License](https://github.com/himanshusaini11/DataScience/LICENSE.md)
+## Limitations and Next Steps
+- Rare‑event setting means modest absolute precision is expected; cost‑aware thresholds are essential.
+- Results can shift with future process changes (prevalence drift). Consider periodic recalibration/retuning.
+- Potential additions: reliability plots (calibration/ECE/Brier), feature‑importance stability over time, and an interactive dashboard to explore operating points.
 
 ## Contact
-For any queries or collaborations, feel free to reach out:
+- Name: Himanshu Saini
+- Email: himanshusaini.rf@gmail.com
+- LinkedIn: https://www.linkedin.com/in/sainihimanshu/
 
-Name: Himanshu Saini
-Email: himanshusaini.rf@gmail.com
-LinkedIn: [LinkedIn](https://www.linkedin.com/in/sainihimanshu/)
+## Acknowledgments
+This project used AI‑assisted tooling (OpenAI ChatGPT) for editorial support, and documentation. All data preparation, modeling, evaluation, and conclusions were implemented, reviewed, and validated by the author, and the results are reproducible from the included notebooks and artifacts.

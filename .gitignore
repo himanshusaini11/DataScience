@@ -1,2 +1,14 @@
-/Project3-IndustrialSafetyPrediction/ProjectSteps.md
-/Project3-IndustrialSafetyPrediction/secom_yield_prediction_project_readme_and_plan.md
+DataScience.code-workspace
+
+# Ignore literature folders in any project (local-only)
+**/literature/
+# Ignore all Markdown files
+*.md
+
+# But keep README.md
+!README.md
+
+# Ignore all zip files
+*.zip
+# Ignore workspace files
+*.code-workspace
