@@ -1,5 +1,16 @@
 DataScience.code-workspace
 
+# macOS metadata
+.DS_Store
+**/.DS_Store
+**/._*
+.AppleDouble
+.DocumentRevisions-V100
+.TemporaryItems
+.Spotlight-V100
+.Trashes
+.fseventsd
+
 # Ignore literature folders in any project (local-only)
 **/literature/
 # Ignore all Markdown files
